@@ -93,19 +93,19 @@ st.caption("🎯 Schnellstart – ein Beispielszenario laden:")
 preset_col1, preset_col2, preset_col3 = st.columns(3)
 with preset_col1:
     st.button(
-        "🏗️ Kragarm (Michell-Benchmark)", use_container_width=True,
+        "🏗️ Kragarm (Michell-Benchmark)", width="stretch",
         on_click=apply_preset, args=("Kragarm (Michell-Benchmark)", DEFAULT_MATERIAL, 1.0, 0),
         help="Das Standard-Benchmark der Topologieoptimierungs-Literatur - eingespannte Wand, Last an der freien Ecke.",
     )
 with preset_col2:
     st.button(
-        "🌉 Einfeldträger (Brücke)", use_container_width=True,
+        "🌉 Einfeldträger (Brücke)", width="stretch",
         on_click=apply_preset, args=("Einfeldträger (Brücke)", DEFAULT_MATERIAL, 1.0, 0),
         help="Beidseitig gelagert, Last in Feldmitte - die Optimierung darf frei entscheiden, welches Fachwerkmuster entsteht.",
     )
 with preset_col3:
     st.button(
-        "🔬 Kompaktes Raster (Schnelltest)", use_container_width=True,
+        "🔬 Kompaktes Raster (Schnelltest)", width="stretch",
         on_click=apply_preset, args=("Kompaktes Raster (Schnelltest)", DEFAULT_MATERIAL, 1.0, 0),
         help="Kleines Kandidatennetz - schnell nachvollziehbar, hier findet die Metaheuristik die größte Verbesserung.",
     )
@@ -130,7 +130,7 @@ with st.sidebar:
     seed_lo, seed_hi = bounds("seed_input")
     seed = st.number_input("Zufalls-Seed (Metaheuristik)", min_value=seed_lo, max_value=seed_hi, step=1, key="seed_input")
     st.button(
-        "🎲 Neuen Zufalls-Seed für die Metaheuristik", use_container_width=True, on_click=randomize_seed,
+        "🎲 Neuen Zufalls-Seed für die Metaheuristik", width="stretch", on_click=randomize_seed,
         help="Simulated Annealing ist stochastisch - ein neuer Seed führt zu einer neuen Suchtrajektorie.",
     )
 
@@ -154,7 +154,7 @@ m3.metric("Kinematisch stabil", "Ja" if bestes.stabil else "Nein")
 
 st.plotly_chart(
     topologie_figure(gs, bestes.maske, bestes.flaechen, auslastung_best, f"{gs.name} – {bester_name}"),
-    use_container_width=True, key="topologie_main",
+    width="stretch", key="topologie_main",
 )
 
 pdf_bytes = generate_topology_report_pdf(gs, material, bestes, auslastung_best)
@@ -202,8 +202,8 @@ if info:
 st.markdown("---")
 
 with st.expander("🔧 Wie wir das erreichen – vollständiger Methodenvergleich", expanded=False):
-    st.plotly_chart(ground_structure_figure(gs, f"{gs.name} – Ground Structure ({len(gs.kandidaten)} Kandidaten-Stäbe)"), use_container_width=True, key="ground_structure")
-    st.plotly_chart(vergleich_balken_figure(ergebnisse), use_container_width=True, key="vergleich_balken")
+    st.plotly_chart(ground_structure_figure(gs, f"{gs.name} – Ground Structure ({len(gs.kandidaten)} Kandidaten-Stäbe)"), width="stretch", key="ground_structure")
+    st.plotly_chart(vergleich_balken_figure(ergebnisse), width="stretch", key="vergleich_balken")
     tabelle = pd.DataFrame(
         [
             {
@@ -214,7 +214,7 @@ with st.expander("🔧 Wie wir das erreichen – vollständiger Methodenvergleic
             for name in METHODEN_REIHENFOLGE
         ]
     )
-    st.dataframe(tabelle, use_container_width=True, hide_index=True)
+    st.dataframe(tabelle, width="stretch", hide_index=True)
 
     tab_labels = [METHODEN_TAB_LABEL[m] for m in METHODEN_REIHENFOLGE] + ["📊 Konvergenz"]
     tabs = st.tabs(tab_labels)
@@ -234,13 +234,13 @@ with st.expander("🔧 Wie wir das erreichen – vollständiger Methodenvergleic
             auslastung = _auslastung_fuer(gs, material, ergebnis)
             st.plotly_chart(
                 topologie_figure(gs, ergebnis.maske, ergebnis.flaechen, auslastung, name),
-                use_container_width=True, key=f"topologie_{name}",
+                width="stretch", key=f"topologie_{name}",
             )
 
     with tabs[-1]:
         meta_verlauf = ergebnisse["Metaheuristik (Simulated Annealing)"].verlauf
         st.caption("Beste bisher gefundene Masse je Suchschritt (Simulated Annealing über Stab-Umschaltungen).")
-        st.plotly_chart(konvergenz_figure(meta_verlauf), use_container_width=True, key="konvergenz")
+        st.plotly_chart(konvergenz_figure(meta_verlauf), width="stretch", key="konvergenz")
 
 st.markdown("---")
 
